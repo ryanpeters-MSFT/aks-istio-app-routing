@@ -32,6 +32,22 @@ The script uses these defaults:
 
 Edit `setup.ps1` if you want to change those values.
 
+## Internal Gateway
+
+The Gateway in `gateway.yaml` can optionally be configured as an internal Azure load balancer by setting this annotation under `spec.infrastructure.annotations`:
+
+```yaml
+service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+```
+
+That causes AKS to provision the generated gateway `Service` with a private frontend address instead of a public one.
+
+The IP reported by the Gateway status is therefore an internal IP from the cluster virtual network. You must run validation from a host that has network reachability to that virtual network, such as:
+
+- A machine inside the same virtual network
+- A peered virtual network
+- A machine connected by VPN or ExpressRoute
+
 ## Routing Behavior
 
 This sample currently uses host-based routing.
